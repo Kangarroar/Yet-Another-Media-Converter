@@ -1,0 +1,237 @@
+
+.minimal {
+  background: #000000 !important;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.minimal #app {
+  background: #000000 !important;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Remove all gradient */
+.minimal #app::before,
+.minimal #app::after {
+  display: none !important;
+}
+
+/* Home page minimal styles */
+.minimal .home-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.minimal .home-container .content,
+.minimal .content {
+  text-align: center !important;
+  max-width: 600px !important;
+  border: 2px dashed rgba(255, 255, 255, 0.3) !important;
+  border-radius: 8px !important;
+  padding: 5rem 3rem !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.minimal .home-container .title,
+.minimal .title {
+  font-size: 2rem !important;
+  font-weight: normal !important;
+  color: #ffffff !important;
+  margin-bottom: 4rem !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+
+.minimal .home-container .subtitle,
+.minimal .subtitle {
+  font-size: 0.9rem !important;
+  color: #aaaaaa !important;
+  margin-bottom: 2rem !important;
+  font-weight: normal !important;
+}
+
+.minimal .buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* More specific selectors to override scoped styles */
+.minimal .home-container .converter-btn,
+.minimal .converter-btn {
+  background: transparent !important;
+  border: 1px dashed #666666 !important;
+  border-radius: 0px !important;
+  padding: 1rem !important;
+  color: #ffffff !important;
+  font-size: 0.9rem !important;
+  font-weight: normal !important;
+  cursor: pointer !important;
+  transition: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.3rem !important;
+  min-height: 60px !important;
+  justify-content: center !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.minimal .home-container .converter-btn:hover,
+.minimal .converter-btn:hover {
+  border-color: #999999 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.minimal .btn-icon {
+  display: none !important;
+}
+
+/* Popup minimal styles */
+.minimal .popup-overlay {
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: none;
+}
+
+.minimal .popup-container {
+  background: #000000;
+  border: 1px dashed #666666;
+  border-radius: 0;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.minimal .popup-header {
+  border-bottom: 1px dashed #666666;
+  padding: 1rem;
+}
+
+.minimal .back-btn {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+  padding: 0.3rem 0.6rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: none;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.minimal .back-btn:hover {
+  border-color: #999999;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.minimal .popup-header h2 {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+.minimal .popup-content {
+  padding: 1rem;
+}
+
+.minimal .upload-box {
+  border: 1px dashed #666666;
+  border-radius: 0;
+  padding: 1.5rem;
+  text-align: center;
+  background: transparent;
+  transition: none;
+  cursor: pointer;
+}
+
+.minimal .upload-box:hover {
+  border-color: #999999;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.minimal .upload-icon {
+  display: none !important;
+}
+
+.minimal .upload-box p {
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+.minimal .upload-hint {
+  color: #999999;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.minimal .converter-info {
+  text-align: center;
+  color: #999999;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.minimal .converter-info p {
+  margin-bottom: 0.5rem;
+}
+
+/* Mobile responsive for minimal theme */
+@media (max-width: 768px) {
+  .minimal .content {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+  
+  .minimal .title {
+    font-size: 2rem;
+  }
+  
+  .minimal .buttons-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  .minimal .converter-btn {
+    padding: 1.2rem 0.8rem;
+    min-height: 70px;
+  }
+  
+  .minimal .popup-overlay {
+    padding: 1rem;
+  }
+  
+  .minimal .popup-container {
+    max-height: 90vh;
+  }
+  
+  .minimal .popup-header {
+    padding: 1rem 1rem 0.8rem;
+  }
+  
+  .minimal .popup-content {
+    padding: 1rem;
+  }
+  
+  .minimal .upload-box {
+    padding: 1.5rem 1rem;
+  }
+}
+
