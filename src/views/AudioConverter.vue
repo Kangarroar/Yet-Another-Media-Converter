@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useLanguageStore } from '@/stores/language'
 import '@/assets/styles/popup.css'
 
 const router = useRouter()
+const languageStore = useLanguageStore()
 
 const goBack = () => {
   router.push('/')
@@ -13,21 +15,21 @@ const goBack = () => {
   <div class="popup-overlay">
     <div class="popup-container">
       <div class="popup-header">
-        <button @click="goBack" class="back-btn">← Back</button>
-        <h2>Audio Converter</h2>
+        <button @click="goBack" class="back-btn">{{ languageStore.t.back }}</button>
+        <h2>{{ languageStore.t.audioConverter }}</h2>
       </div>
       
       <div class="popup-content">
         <div class="upload-area">
           <div class="upload-box">
             <div class="upload-icon">🎵</div>
-            <p>Drop your audio file here or click to browse</p>
-            <p class="upload-hint">Supports WAV, MP3, AAC, M4A, FLAC, Opus</p>
+            <p>{{ languageStore.t.dropFile }}</p>
+            <p class="upload-hint">{{ languageStore.t.audioHint }}</p>
           </div>
         </div>
         
         <div class="converter-info">
-          <p>Convert audio files between different formats</p>
+          <p>{{ languageStore.t.audioDescription }}</p>
         </div>
       </div>
     </div>

@@ -1,10 +1,23 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import { onMounted } from 'vue'
+import { useLanguageStore } from '@/stores/language'
+import AppFooter from '@/components/AppFooter.vue'
+
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.initializeLanguage()
+})
 </script>
 
 <template>
   <div id="app">
     <RouterView />
+  </div>
+
+  <div id="footer">
+    <AppFooter />
   </div>
 </template>
 
@@ -22,7 +35,7 @@ html, body {
 
 #app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a0b0b 0%, #1f1111 50%, #1a1b1f 100%);
+  background: linear-gradient(135deg, #1a0b0b 0%, #110a0a 50%, #1f1a1a 100%);
   position: relative;
   overflow-x: hidden;
 }
@@ -30,7 +43,7 @@ html, body {
 /* Blur overlay */
 #app::after {
   content: '';
-  position: absolute;
+  position: static;
   top: 0;
   left: 0;
   right: 0;

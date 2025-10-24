@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useLanguageStore } from '@/stores/language'
 
 const router = useRouter()
+const languageStore = useLanguageStore()
 
 const navigateTo = (route: string) => {
   router.push(route)
@@ -11,28 +13,28 @@ const navigateTo = (route: string) => {
 <template>
   <div class="home-container">
     <div class="content">
-      <h1 class="title">Yet Another Media Converter</h1>
-      <p class="subtitle">Convert your media files locally in your browser</p>
+      <h1 class="title">{{ languageStore.t.title }}</h1>
+      <p class="subtitle">{{ languageStore.t.subtitle }}</p>
       
       <div class="buttons-grid">
         <button @click="navigateTo('/image')" class="converter-btn">
           <div class="btn-icon">🖼️</div>
-          <span>Image</span>
+          <span>{{ languageStore.t.image }}</span>
         </button>
         
         <button @click="navigateTo('/audio')" class="converter-btn">
           <div class="btn-icon">🎵</div>
-          <span>Audio</span>
+          <span>{{ languageStore.t.audio }}</span>
         </button>
         
         <button @click="navigateTo('/video')" class="converter-btn">
           <div class="btn-icon">🎬</div>
-          <span>Video</span>
+          <span>{{ languageStore.t.video }}</span>
         </button>
         
         <button @click="navigateTo('/compress')" class="converter-btn">
           <div class="btn-icon">🗜️</div>
-          <span>Compress</span>
+          <span>{{ languageStore.t.compress }}</span>
         </button>
       </div>
     </div>
