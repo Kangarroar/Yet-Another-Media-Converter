@@ -1,0 +1,128 @@
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.123);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.popup-container {
+  background: rgba(20, 15, 15, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.popup-header h2 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: 300;
+}
+
+.popup-content {
+  padding: 2rem;
+}
+
+.upload-area {
+  margin-bottom: 2rem;
+}
+
+.upload-box {
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-box:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.upload-box p {
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.upload-hint {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+}
+
+.converter-info {
+  text-align: center;
+  color: #a0a0a0;
+}
+
+.converter-info p {
+  margin-bottom: 0.5rem;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .popup-overlay {
+    padding: 1rem;
+  }
+  
+  .popup-container {
+    max-height: 90vh;
+  }
+  
+  .popup-header {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+  
+  .popup-content {
+    padding: 1.5rem;
+  }
+  
+  .upload-box {
+    padding: 2rem 1rem;
+  }
+}
