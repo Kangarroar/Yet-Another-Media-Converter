@@ -235,3 +235,155 @@
   }
 }
 
+/* Video Compression Minimal Styles */
+.minimal .file-selected {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+}
+
+.minimal .preset-btn {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.minimal .preset-btn:hover {
+  border-color: #999999;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.minimal .preset-btn.active {
+  border-color: #999999;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.minimal .advanced-toggle {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.minimal .advanced-toggle:hover {
+  border-color: #999999;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.minimal .advanced-content {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+}
+
+.minimal .bitrate-slider {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.minimal .bitrate-slider::-webkit-slider-thumb {
+  background: #999999;
+}
+
+.minimal .bitrate-slider::-moz-range-thumb {
+  background: #999999;
+}
+
+.minimal .bitrate-value {
+  color: #999999;
+}
+
+.minimal .compress-btn {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+  color: #ffffff;
+  font-weight: normal;
+  box-shadow: none;
+  transform: none;
+}
+
+.minimal .compress-btn:hover:not(:disabled) {
+  border-color: #999999;
+  background: rgba(255, 255, 255, 0.05);
+  transform: none;
+  box-shadow: none;
+}
+
+.minimal .compress-btn.processing {
+  background: rgba(255, 255, 255, 0.1);
+  animation: none;
+}
+
+.minimal .progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.minimal .progress-fill {
+  background: #999999;
+}
+
+.minimal .error-message {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px dashed #ff0000;
+  border-radius: 0;
+}
+
+.minimal .result-panel {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+  backdrop-filter: none;
+}
+
+.minimal .size-comparison {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+}
+
+.minimal .stat-item {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+}
+
+.minimal .size-bar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.minimal .size-bar-fill {
+  background: #999999;
+}
+
+.minimal .download-btn {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.minimal .download-btn:hover {
+  border-color: #999999;
+  background: rgba(255, 255, 255, 0.05);
+  transform: none;
+}
+
+.minimal .retry-btn {
+  background: transparent;
+  border: 1px dashed #666666;
+  border-radius: 0;
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.minimal .retry-btn:hover {
+  border-color: #999999;
+  background: rgba(255, 255, 255, 0.05);
+  transform: none;
+}
+
