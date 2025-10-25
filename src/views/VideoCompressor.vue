@@ -228,7 +228,7 @@ const goBack = () => {
               class="compress-btn"
               :class="{ processing: isProcessing }"
             >
-              <span v-if="!isProcessing">{{ languageStore.t.compress }}</span>
+              <span v-if="!isProcessing">{{ languageStore.t.compressVideo }}</span>
               <span v-else>{{ languageStore.t.compressing }}</span>
             </button>
           </div>

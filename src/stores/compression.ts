@@ -4,8 +4,7 @@ import type {
   CompressionSettings, 
   CompressionState, 
   CompressionResult, 
-  CompressionProgress,
-  QualityPreset 
+  CompressionProgress
 } from '@/types/compression'
 import { QUALITY_PRESETS } from '@/types/compression'
 

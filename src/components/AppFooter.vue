@@ -9,10 +9,10 @@ const navigateTo = (route: string) => {
   router.push(route)
 }
 
-const toggleLanguage = () => {
-  const newLang = languageStore.currentLanguage === 'en' ? 'es' : 'en'
-  languageStore.setLanguage(newLang)
-}
+// const toggleLanguage = () => {
+//   const newLang = languageStore.currentLanguage === 'en' ? 'es' : 'en'
+//   languageStore.setLanguage(newLang)
+// }
 </script>
 
 <template>

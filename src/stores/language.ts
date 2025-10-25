@@ -50,7 +50,7 @@ export const useLanguageStore = defineStore('language', () => {
       advancedSettings: 'Advanced Settings',
       videoBitrate: 'Video Bitrate',
       audioBitrate: 'Audio Bitrate',
-      compress: 'Compress',
+      compressVideo: 'Compress',
       compressing: 'Compressing...',
       compressionComplete: 'Compression Complete',
       originalSize: 'Original Size',
