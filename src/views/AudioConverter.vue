@@ -4,6 +4,21 @@ import { useRouter } from 'vue-router'
 import { useLanguageStore } from '@/stores/language'
 import '@/assets/styles/popup.css'
 
+// MediaBunny imports
+import { 
+  BlobSource, 
+  BufferTarget, 
+  Conversion, 
+  Input, 
+  Output,
+  Mp3OutputFormat,
+  AdtsOutputFormat,
+  OggOutputFormat,
+  FlacOutputFormat,
+  ALL_FORMATS
+} from 'mediabunny'
+import type { AudioCodec } from 'mediabunny'
+
 const router = useRouter()
 const languageStore = useLanguageStore()
 const supportedFormats = ['aac', 'opus', 'mp3', 'vorbis', 'flac'] as const
@@ -17,6 +32,14 @@ const showAdvanced = ref(false)
 const isDragOver = ref(false)
 const fileInput = ref<HTMLInputElement | null>(null)
 
+// Conversion state
+const isConverting = ref(false)
+const conversionProgress = ref(0)
+const conversionError = ref<string | null>(null)
+const convertedFile = ref<Blob | null>(null)
+const conversionComplete = ref(false)
+
+// NEED TO CHANGE DEPENDING ON OUTPUT FORMAT
 // Advanced
 const bitrate = ref(128)
 const channels = ref(2)
@@ -83,26 +106,124 @@ const removeFile = () => {
   detectedFormat.value = null
 }
 
-const convertAudio = () => {
+const convertAudio = async () => {
   if (!selectedFile.value) return
   
-  // Conversion placeholder
-  console.log('data:', {
-    file: selectedFile.value.name,
-    inputFormat: detectedFormat.value,
-    outputFormat: outputFormat.value,
-    bitrate: bitrate.value,
-    channels: channels.value,
-    sampleRate: sampleRate.value
-  })
+  try {
+    console.log('File:', selectedFile.value.name, 'Size:', selectedFile.value.size)
+    console.log({
+      outputFormat: outputFormat.value,
+      bitrate: bitrate.value,
+      channels: channels.value,
+      sampleRate: sampleRate.value
+    })
+    
+    isConverting.value = true
+    conversionError.value = null
+    conversionProgress.value = 0
+    const inputSource = new BlobSource(selectedFile.value)
+    
+    const input = new Input({
+      source: inputSource,
+      formats: ALL_FORMATS
+    })
+    
+    //Conversion fails on some outputs due to mismatched parameters?
+    const getOutputFormat = (format: AudioFormat) => {
+      switch (format) {
+        case 'mp3': return new Mp3OutputFormat()
+        case 'aac': return new AdtsOutputFormat() 
+        case 'opus': return new OggOutputFormat() 
+        case 'vorbis': return new OggOutputFormat() 
+        case 'flac': return new FlacOutputFormat()
+        default: return new Mp3OutputFormat()
+      }
+    }
+    
+    const outputTarget = new BufferTarget()
+
+    //console.log('Output', outputFormat.value)
+    const output = new Output({
+      format: getOutputFormat(outputFormat.value),
+      target: outputTarget
+    })
+    
+    // Conversion 
+    const conversion = await Conversion.init({
+      input,
+      output,
+      audio: {
+        codec: outputFormat.value as AudioCodec,
+        bitrate: bitrate.value * 1000, // Convert kbps to bps
+        numberOfChannels: channels.value,
+        sampleRate: sampleRate.value
+      }
+    })
+    
+    console.log(conversion.isValid)
+    console.log(conversion.discardedTracks)
+    console.log(conversion.utilizedTracks)
+    
+    // Check if conversion is valid
+    if (!conversion.isValid) {
+      throw new Error('Invalid conversion configuration')
+    }
+    
+    conversion.onProgress = (progress: number) => {
+      const percentage = Math.round(progress * 100)
+      conversionProgress.value = percentage
+    }
+    
+    await conversion.execute()
+    
+    if (outputTarget.buffer) {
+      convertedFile.value = new Blob([outputTarget.buffer], { 
+        type: `audio/${outputFormat.value}` 
+      })
+      conversionComplete.value = true
+    } else {
+      console.warn('No buffer data')
+    }
+    
+  } catch (error) {
+    console.error('Conversion error:', error)
+    console.error('Error details:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      //message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    })
+    conversionError.value = error instanceof Error ? error.message : 'Conversion failed'
+  } finally {
+    isConverting.value = false
+  }
 }
 
 const formatDisplayName = (format: AudioFormat) => {
   return format.toUpperCase()
 }
 
+const downloadConvertedFile = () => {
+  if (!convertedFile.value) return
+  
+  const url = URL.createObjectURL(convertedFile.value)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${selectedFile.value?.name.split('.')[0] || 'converted'}.${outputFormat.value}`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+const resetConversion = () => {
+  conversionComplete.value = false
+  convertedFile.value = null
+  conversionProgress.value = 0
+  conversionError.value = null
+}
+
 const canConvert = computed(() => {
-  return selectedFile.value && outputFormat.value
+  return selectedFile.value && outputFormat.value && !isConverting.value
 })
 </script>
 
@@ -228,8 +349,59 @@ const canConvert = computed(() => {
               class="convert-btn"
               :disabled="!canConvert"
             >
-              {{ languageStore.t.convertAudio }}
+              {{ isConverting ? 'Converting...' : languageStore.t.convertAudio }}
             </button>
+          </div>
+
+          <!-- Progress Bar -->
+          <div v-if="isConverting" class="progress-section">
+            <div class="progress-bar">
+              <div 
+                class="progress-fill" 
+                :style="{ width: `${conversionProgress}%` }"
+              ></div>
+            </div>
+            <div class="progress-text">
+              {{ conversionProgress }}% Complete
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div v-if="conversionError" class="error-section">
+            <div class="error-message">
+              <span class="error-icon">⚠️</span>
+              {{ conversionError }}
+            </div>
+            <button @click="resetConversion" class="retry-btn">
+              {{ languageStore.t.retry }}
+            </button>
+          </div>
+
+          <!-- Conversion Results -->
+          <div v-if="conversionComplete && convertedFile" class="results-section">
+            <div class="result-panel">
+              <div class="result-header">
+                <h3>✅ {{ languageStore.t.compressionComplete }}</h3>
+              </div>
+              <div class="result-content">
+                <div class="file-info">
+                  <div class="file-name">
+                    {{ selectedFile?.name.split('.')[0] }}.{{ outputFormat }}
+                  </div>
+                  <div class="file-size">
+                    {{ (convertedFile.size / 1024 / 1024).toFixed(2) }} MB
+                  </div>
+                </div>
+                <div class="result-actions">
+                  <button @click="downloadConvertedFile" class="download-btn">
+                    {{ languageStore.t.download }}
+                  </button>
+                  <button @click="resetConversion" class="retry-btn">
+                    {{ languageStore.t.compressAgain }}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
