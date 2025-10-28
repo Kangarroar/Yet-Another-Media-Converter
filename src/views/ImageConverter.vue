@@ -9,10 +9,16 @@ const languageStore = useLanguageStore()
 const goBack = () => {
   router.push('/')
 }
+// Outside close handler
+const handleOverlayClick = (event: MouseEvent) => {
+  if (event.target === event.currentTarget) {
+    goBack()
+  }
+}
 </script>
 
 <template>
-  <div class="popup-overlay">
+  <div class="popup-overlay" @click="handleOverlayClick">
     <div class="popup-container">
       <div class="popup-header">
         <button @click="goBack" class="back-btn">{{ languageStore.t.back }}</button>
