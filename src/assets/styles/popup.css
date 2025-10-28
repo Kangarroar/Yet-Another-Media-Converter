@@ -10,14 +10,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: var(--z-overlay);
   padding: 2rem;
 }
 
 .popup-container {
   background: rgba(20, 15, 15, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-3xl);
   max-width: 600px;
   width: 100%;
   max-height: 80vh;
@@ -29,79 +29,79 @@
 .popup-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 2rem 2rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-primary);
 }
 
 .back-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  padding: 0.5rem 1rem;
-  color: #ffffff;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-white);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-normal);
   font-size: 0.9rem;
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-bg-hover);
 }
 
 .popup-header h2 {
-  color: #ffffff;
+  color: var(--color-white);
   font-size: 1.8rem;
   font-weight: 300;
 }
 
 .popup-content {
-  padding: 2rem;
+  padding: var(--spacing-xl);
 }
 
 .upload-area {
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-xl);
 }
 
 .upload-box {
-  border: 2px dashed rgba(255, 255, 255, 0.3);
-  border-radius: 16px;
-  padding: 3rem 2rem;
+  border: 2px dashed var(--color-border-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl) var(--spacing-xl);
   text-align: center;
-  background: rgba(255, 255, 255, 0.02);
-  transition: all 0.3s ease;
+  background: var(--color-bg-primary);
+  transition: var(--transition-normal);
   cursor: pointer;
 }
 
 .upload-box:hover {
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--color-border-hover);
+  background: var(--color-bg-secondary);
 }
 
 .upload-icon {
   font-size: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
   opacity: 0.7;
 }
 
 .upload-box p {
-  color: #ffffff;
-  margin-bottom: 0.5rem;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-sm);
   font-size: 1.1rem;
 }
 
 .upload-hint {
-  color: #a0a0a0;
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
 }
 
 .converter-info {
   text-align: center;
-  color: #a0a0a0;
+  color: var(--color-text-secondary);
 }
 
 .converter-info p {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 /* Mobile responsive styles */

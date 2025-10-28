@@ -1,8 +1,8 @@
 
 .minimal {
   background: #000000 !important;
-  color: #ffffff;
-  font-family: Arial, sans-serif;
+  color: var(--color-white);
+  font-family: var(--font-family-minimal);
 }
 
 .minimal #app {
@@ -12,7 +12,7 @@
   overflow-x: hidden;
 }
 
-/* Remove all gradient */
+/* gonna remove this next */
 .minimal #app::before,
 .minimal #app::after {
   display: none !important;
@@ -43,7 +43,7 @@
 .minimal .title {
   font-size: 2rem !important;
   font-weight: normal !important;
-  color: #ffffff !important;
+  color: var(--color-white) !important;
   margin-bottom: 4rem !important;
   letter-spacing: normal !important;
   text-transform: none !important;
@@ -52,7 +52,7 @@
 .minimal .home-container .subtitle,
 .minimal .subtitle {
   font-size: 0.9rem !important;
-  color: #aaaaaa !important;
+  color: var(--color-text-secondary) !important;
   margin-bottom: 2rem !important;
   font-weight: normal !important;
 }

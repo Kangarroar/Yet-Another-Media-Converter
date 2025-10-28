@@ -5,6 +5,7 @@ import { useThemeStore } from '@/stores/theme'
 import { useLanguageStore } from '@/stores/language'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import AppFooter from '@/components/AppFooter.vue'
+import '@/assets/styles/common.css'
 import '@/assets/styles/minimal.css'
 
 const themeStore = useThemeStore()
