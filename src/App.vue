@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { onMounted } from 'vue'
-import { useThemeStore } from '@/stores/theme'
 import { useLanguageStore } from '@/stores/language'
-import ThemeToggle from '@/components/ThemeToggle.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import '@/assets/styles/common.css'
-import '@/assets/styles/minimal.css'
 
-const themeStore = useThemeStore()
 const languageStore = useLanguageStore()
 
 onMounted(() => {
-  themeStore.initializeTheme()
   languageStore.initializeLanguage()
 })
 </script>
@@ -20,7 +15,6 @@ onMounted(() => {
 <template>
   <div id="app">
     <RouterView />
-    <ThemeToggle />
     <AppFooter />
   </div>
 </template>

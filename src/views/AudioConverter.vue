@@ -15,14 +15,23 @@ import {
   AdtsOutputFormat,
   OggOutputFormat,
   FlacOutputFormat,
-  ALL_FORMATS
+  WavOutputFormat,
+  ALL_FORMATS,
+  getEncodableAudioCodecs
 } from 'mediabunny'
 import type { AudioCodec } from 'mediabunny'
 
+// Register MP3 encoder
+import { registerMp3Encoder } from '@mediabunny/mp3-encoder'
+registerMp3Encoder()
+
 const router = useRouter()
 const languageStore = useLanguageStore()
-const supportedFormats = ['aac', 'opus', 'mp3', 'vorbis', 'flac'] as const
-type AudioFormat = typeof supportedFormats[number]
+const allPossibleFormats = ['aac', 'opus', 'mp3', 'vorbis', 'flac', 'wav'] as const
+type AudioFormat = typeof allPossibleFormats[number]
+
+// Will be populated with browser-supported formats
+const supportedFormats = ref<AudioFormat[]>([])
 
 // Reactive state
 const selectedFile = ref<File | null>(null)
@@ -42,6 +51,7 @@ const conversionComplete = ref(false)
 // NEED TO CHANGE DEPENDING ON OUTPUT FORMAT
 // Advanced
 const bitrate = ref(128)
+const bitrateMode = ref<'constant' | 'variable'>('variable')
 const channels = ref(2)
 const sampleRate = ref(44100)
 
@@ -50,6 +60,41 @@ const bitrateOptions = [64, 96, 128, 160, 192, 256, 320]
 
 // Sample rate
 const sampleRateOptions = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000]
+
+// Check which audio codecs are supported by the browser
+const checkSupportedCodecs = async () => {
+  try {
+    console.log('Checking supported audio codecs...')
+    const compressedFormats = allPossibleFormats.filter(f => f !== 'wav') as AudioCodec[]
+    const encodableCodecs = await getEncodableAudioCodecs([...compressedFormats] as AudioCodec[], {
+      numberOfChannels: 2,
+      sampleRate: 44100,
+      bitrate: 128000
+    })
+    
+    console.log('Encodable codecs:', encodableCodecs)
+    
+    const detectedFormats = allPossibleFormats.filter(format => {
+      if (format === 'wav') return true // WAV always supported 
+      if (format === 'mp3') return true // MP3 is almost always supported
+      return encodableCodecs.includes(format as AudioCodec)
+    }) as AudioFormat[]
+    
+    supportedFormats.value = detectedFormats
+    
+    console.log('Supported formats for this browser:', supportedFormats.value)
+    
+    // Set default output format to first supported format
+    if (supportedFormats.value.length > 0) {
+      outputFormat.value = supportedFormats.value[0]!
+    }
+  } catch (error) {
+    console.error('Error checking supported codecs:', error)
+    // Fallback to basic formats if check fails
+    supportedFormats.value = ['mp3', 'aac', 'wav'] as AudioFormat[]
+    outputFormat.value = 'mp3'
+  }
+}
 
 const goBack = () => {
   router.push('/')
@@ -66,10 +111,9 @@ const handleFileSelect = (file: File) => {
   selectedFile.value = file
   
   const extension = file.name.split('.').pop()?.toLowerCase()
-  if (extension && supportedFormats.includes(extension as AudioFormat)) {
+  if (extension && supportedFormats.value.includes(extension as AudioFormat)) {
     detectedFormat.value = extension as AudioFormat
   } else {
-    // ?
     detectedFormat.value = null
   }
 }
@@ -114,6 +158,7 @@ const convertAudio = async () => {
     console.log({
       outputFormat: outputFormat.value,
       bitrate: bitrate.value,
+      bitrateMode: bitrateMode.value,
       channels: channels.value,
       sampleRate: sampleRate.value
     })
@@ -136,8 +181,16 @@ const convertAudio = async () => {
         case 'opus': return new OggOutputFormat() 
         case 'vorbis': return new OggOutputFormat() 
         case 'flac': return new FlacOutputFormat()
+        case 'wav': return new WavOutputFormat()
         default: return new Mp3OutputFormat()
       }
+    }
+    
+    const getCodecForFormat = (format: AudioFormat): AudioCodec => {
+      if (format === 'wav') {
+        return 'pcm-s16'
+      }
+      return format as AudioCodec
     }
     
     const outputTarget = new BufferTarget()
@@ -147,17 +200,30 @@ const convertAudio = async () => {
       format: getOutputFormat(outputFormat.value),
       target: outputTarget
     })
+
+    const audioOptions: {
+      codec: AudioCodec
+      numberOfChannels: number
+      sampleRate: number
+      bitrateMode?: 'constant' | 'variable'
+      bitrate?: number
+    } = {
+      codec: getCodecForFormat(outputFormat.value),
+      numberOfChannels: channels.value,
+      sampleRate: sampleRate.value
+    }
+    
+    // Only add bitrate for compressed formats
+    if (outputFormat.value !== 'wav') {
+      audioOptions.bitrate = bitrate.value * 1000 // Convert kbps to bps
+      audioOptions.bitrateMode = bitrateMode.value
+    }
     
     // Conversion 
     const conversion = await Conversion.init({
       input,
       output,
-      audio: {
-        codec: outputFormat.value as AudioCodec,
-        bitrate: bitrate.value * 1000, // Convert kbps to bps
-        numberOfChannels: channels.value,
-        sampleRate: sampleRate.value
-      }
+      audio: audioOptions
     })
     
     console.log(conversion.isValid)
@@ -177,8 +243,21 @@ const convertAudio = async () => {
     await conversion.execute()
     
     if (outputTarget.buffer) {
+      // Get proper MIME type for the format
+      const getMimeType = (format: AudioFormat): string => {
+        const mimeTypes: Record<AudioFormat, string> = {
+          'mp3': 'audio/mpeg',
+          'aac': 'audio/aac',
+          'opus': 'audio/opus',
+          'vorbis': 'audio/vorbis',
+          'flac': 'audio/flac',
+          'wav': 'audio/wav'
+        }
+        return mimeTypes[format] || `audio/${format}`
+      }
+      
       convertedFile.value = new Blob([outputTarget.buffer], { 
-        type: `audio/${outputFormat.value}` 
+        type: getMimeType(outputFormat.value)
       })
       conversionComplete.value = true
     } else {
@@ -199,7 +278,15 @@ const convertAudio = async () => {
 }
 
 const formatDisplayName = (format: AudioFormat) => {
-  return format.toUpperCase()
+  const names: Record<AudioFormat, string> = {
+    'mp3': 'MP3',
+    'aac': 'AAC',
+    'opus': 'Opus',
+    'vorbis': 'Vorbis',
+    'flac': 'FLAC',
+    'wav': 'WAV'
+  }
+  return names[format] || format.toUpperCase()
 }
 
 const downloadConvertedFile = () => {
@@ -223,8 +310,11 @@ const resetConversion = () => {
 }
 
 const canConvert = computed(() => {
-  return selectedFile.value && outputFormat.value && !isConverting.value
+  return selectedFile.value && outputFormat.value && !isConverting.value && supportedFormats.value.length > 0
 })
+
+// Initialize codecs
+checkSupportedCodecs()
 </script>
 
 <template>
@@ -288,10 +378,9 @@ const canConvert = computed(() => {
                 v-for="format in supportedFormats" 
                 :key="format" 
                 :value="format"
-                :disabled="format === detectedFormat"
               >
                 {{ formatDisplayName(format) }}
-                <span v-if="format === detectedFormat"> </span>
+                <span v-if="format === detectedFormat"> (Current)</span>
               </option>
             </select>
           </div>
@@ -311,8 +400,17 @@ const canConvert = computed(() => {
           <!-- Advanced Settings Panel -->
           <div v-if="showAdvanced" class="advanced-settings">
             <div class="settings-grid">
+              <!-- Bitrate Mode -->
+              <div v-if="outputFormat !== 'wav'" class="setting-group">
+                <label class="setting-label">Bitrate Mode</label>
+                <select v-model="bitrateMode" class="setting-select">
+                  <option value="variable">Variable</option>
+                  <option value="constant">Constant</option>
+                </select>
+              </div>
+
               <!-- Bitrate -->
-              <div class="setting-group">
+              <div v-if="outputFormat !== 'wav'" class="setting-group">
                 <label class="setting-label">{{ languageStore.t.bitrate }} (kbps)</label>
                 <select v-model="bitrate" class="setting-select">
                   <option v-for="rate in bitrateOptions" :key="rate" :value="rate">

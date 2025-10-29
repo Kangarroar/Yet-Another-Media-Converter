@@ -17,6 +17,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@mediabunny/mp3-encoder": "^1.24.2",
     "mediabunny": "^1.24.2",
     "mp4-muxer": "^5.2.2",
     "pinia": "^3.0.3",
