@@ -25,6 +25,11 @@ export const useLanguageStore = defineStore('language', () => {
       imageConverter: 'Image Converter',
       imageHint: 'Supports JPG, PNG, WebP, AVIF',
       imageDescription: 'Convert images between different formats',
+      convertImage: 'Convert Image',
+      clear: 'Remove',
+      compression: 'Compression',
+      qualityHint: 'Higher quality means larger file size.',
+      filesOnly: 'files only',
       
       // Audio converter
       audioConverter: 'Audio Converter',
@@ -76,6 +81,7 @@ export const useLanguageStore = defineStore('language', () => {
       processing: 'Processing...',
       error: 'Error',
       retry: 'Retry',
+      compressorInfo: 'Tweak bitrate and quickly download your optimized video.',
       
       // Footer
       quickAccess: 'Quick Access',
@@ -102,6 +108,11 @@ export const useLanguageStore = defineStore('language', () => {
       imageConverter: 'Convertidor de Imágenes',
       imageHint: 'Soporta JPG, PNG, WebP, AVIF',
       imageDescription: 'Convierte imágenes entre diferentes formatos',
+      convertImage: 'Convertir Imagen',
+      clear: 'Quitar',
+      compression: 'Compresión',
+      qualityHint: 'Mayor calidad significa un archivo más grande.',
+      filesOnly: 'solo archivos',
       
       // Audio converter
       audioConverter: 'Convertidor de Audio',
@@ -152,6 +163,7 @@ export const useLanguageStore = defineStore('language', () => {
       processing: 'Procesando...',
       error: 'Error',
       retry: 'Reintentar',
+      compressorInfo: 'Ajusta el bitrate y descarga tu video optimizado al instante.',
       
       // Footer
       quickAccess: 'Acceso Rápido',

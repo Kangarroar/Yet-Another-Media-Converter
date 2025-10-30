@@ -12,62 +12,56 @@ const navigateTo = (route: string) => {
 </script>
 
 <template>
-  <div class="home-container flex flex--center" style="min-height: 100vh; padding: 2rem; position: relative; z-index: 1;">
-    <div class="content text--center" style="max-width: 600px;">
-      <h1 class="text--6xl font--light text--white" style="margin-bottom: 1rem; letter-spacing: -0.02em;">{{ languageStore.t.title }}</h1>
-      <p class="text--lg text--secondary" style="margin-bottom: 3rem;">{{ languageStore.t.subtitle }}</p>
-      
-      <div class="grid grid--auto gap--lg" style="max-width: 500px; margin: 0 auto;">
-        <button @click="navigateTo('/image')" class="btn btn--lg converter-btn">
-          <div class="btn-icon">🖼️</div>
-          <span>{{ languageStore.t.image }}</span>
+  <main class="flex flex-1 items-center justify-center px-6 py-12">
+    <div class="mx-auto w-full max-w-4xl text-center">
+      <!-- Hero Section -->
+      <div class="mb-16">
+        <h1 class="mb-4 text-5xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl">
+          {{ languageStore.t.title }}
+        </h1>
+        <p class="mx-auto max-w-2xl text-lg text-[--color-muted] md:text-xl">
+          {{ languageStore.t.subtitle }}
+        </p>
+      </div>
+
+      <!-- Converter Cards Grid -->
+      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Image Converter -->
+        <button
+          @click="navigateTo('/image')"
+          class="group flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl bg-white/10 px-6 py-8 text-[--color-text] font-medium ring-1 ring-white/15 backdrop-blur-xl transition-all duration-200 hover:bg-white/15 hover:ring-white/25 hover:-translate-y-1 hover:shadow-xl hover:shadow-[--color-primary-500]/10 active:scale-95"
+        >
+          <div class="text-4xl transition-transform duration-200 group-hover:scale-110">🖼️</div>
+          <span class="text-sm">{{ languageStore.t.image }}</span>
         </button>
-        
-        <button @click="navigateTo('/audio')" class="btn btn--lg converter-btn">
-          <div class="btn-icon">🎵</div>
-          <span>{{ languageStore.t.audio }}</span>
+
+        <!-- Audio Converter -->
+        <button
+          @click="navigateTo('/audio')"
+          class="group flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl bg-white/10 px-6 py-8 text-[--color-text] font-medium ring-1 ring-white/15 backdrop-blur-xl transition-all duration-200 hover:bg-white/15 hover:ring-white/25 hover:-translate-y-1 hover:shadow-xl hover:shadow-[--color-primary-500]/10 active:scale-95"
+        >
+          <div class="text-4xl transition-transform duration-200 group-hover:scale-110">🎵</div>
+          <span class="text-sm">{{ languageStore.t.audio }}</span>
         </button>
-        
-        <button @click="navigateTo('/video')" class="btn btn--lg converter-btn">
-          <div class="btn-icon">🎬</div>
-          <span>{{ languageStore.t.video }}</span>
+
+        <!-- Video Converter -->
+        <button
+          @click="navigateTo('/video')"
+          class="group flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl bg-white/10 px-6 py-8 text-[--color-text] font-medium ring-1 ring-white/15 backdrop-blur-xl transition-all duration-200 hover:bg-white/15 hover:ring-white/25 hover:-translate-y-1 hover:shadow-xl hover:shadow-[--color-primary-500]/10 active:scale-95"
+        >
+          <div class="text-4xl transition-transform duration-200 group-hover:scale-110">🎬</div>
+          <span class="text-sm">{{ languageStore.t.video }}</span>
         </button>
-        
-        <button @click="navigateTo('/compress')" class="btn btn--lg converter-btn">
-          <div class="btn-icon">🗜️</div>
-          <span>{{ languageStore.t.compress }}</span>
+
+        <!-- Video Compressor -->
+        <button
+          @click="navigateTo('/compress')"
+          class="group flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl bg-white/10 px-6 py-8 text-[--color-text] font-medium ring-1 ring-white/15 backdrop-blur-xl transition-all duration-200 hover:bg-white/15 hover:ring-white/25 hover:-translate-y-1 hover:shadow-xl hover:shadow-[--color-primary-500]/10 active:scale-95"
+        >
+          <div class="text-4xl transition-transform duration-200 group-hover:scale-110">🗜️</div>
+          <span class="text-sm">{{ languageStore.t.compress }}</span>
         </button>
       </div>
     </div>
-  </div>
+  </main>
 </template>
-
-<style scoped>
-.converter-btn {
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-  min-height: 120px;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 2rem 1.5rem;
-}
-
-.converter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.btn-icon {
-  font-size: 2rem;
-  opacity: 0.8;
-}
-
-@media (max-width: 768px) {
-  .converter-btn {
-    padding: 1.5rem 1rem;
-    min-height: 100px;
-  }
-}
-</style>

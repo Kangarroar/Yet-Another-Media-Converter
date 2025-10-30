@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLanguageStore } from '@/stores/language'
-import '@/assets/styles/popup.css'
 
 // MediaBunny imports
 import { 
@@ -347,381 +346,239 @@ checkSupportedCodecs()
 </script>
 
 <template>
-  <div class="popup-overlay" @click="handleOverlayClick">
-    <div class="popup-container">
-      <div class="popup-header">
-        <button @click="goBack" class="back-btn">{{ languageStore.t.back }}</button>
-        <h2>{{ languageStore.t.videoConverter }}</h2>
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 sm:p-6" @click="handleOverlayClick">
+    <div class="w-full max-w-4xl max-h-[92vh] flex flex-col rounded-3xl border border-white/10 bg-linear-to-b from-zinc-900/95 to-black/95 backdrop-blur-3xl shadow-2xl shadow-black/50 ring-1 ring-white/5" @click.stop>
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-white/5 bg-white/2 px-8 py-5 backdrop-blur-sm">
+        <button @click="goBack" class="group flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-gray-400 transition-all hover:bg-white/10 hover:text-white">
+          <svg class="h-4 w-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          {{ languageStore.t.back }}
+        </button>
+        <h2 class="text-xl font-bold text-white tracking-tight">{{ languageStore.t.videoConverter }}</h2>
+        <div class="w-[88px]"></div>
       </div>
-      
-      <div class="popup-content">
-        <!-- File Upload Area -->
-        <div class="upload-area">
-          <div 
-            v-if="!selectedFile"
-            class="upload-box"
-            :class="{ 'drag-over': isDragOver }"
-            @drop="handleDrop"
-            @dragover="handleDragOver"
-            @dragleave="handleDragLeave"
-            @click="fileInput?.click()"
-          >
-            <div class="upload-icon">🎬</div>
-            <p>{{ languageStore.t.dropFile }}</p>
-            <p class="upload-hint">{{ languageStore.t.videoHint }}</p>
-            <input 
-              ref="fileInput"
-              type="file" 
-              accept="video/*"
-              @change="handleFileInput"
-              class="hidden"
-            />
+
+      <div class="flex-1 overflow-y-auto px-8 py-8 space-y-8">
+        <!-- Upload Zone -->
+        <div 
+          v-if="!selectedFile"
+          class="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-white/5 to-white/2 p-16 text-center cursor-pointer transition-all duration-300 hover:border-orange-500/50 hover:from-orange-500/10 hover:to-orange-500/5 hover:shadow-lg hover:shadow-orange-500/10"
+          :class="{ 'border-orange-500! from-orange-500/20! to-orange-500/10! scale-[1.02]': isDragOver }"
+          @drop="handleDrop"
+          @dragover="handleDragOver"
+          @dragleave="handleDragLeave"
+          @click="fileInput?.click()"
+        >
+          <div class="absolute inset-0 opacity-30 pointer-events-none">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-32 w-32 rounded-full bg-orange-500/20 blur-3xl"></div>
           </div>
-          
-          <!-- Selected File Display -->
-          <div v-else class="selected-file">
-            <div class="file-info">
-              <div class="file-icon">🎬</div>
-              <div class="file-details">
-                <h3>{{ selectedFile.name }}</h3>
-                <p v-if="detectedFormat" class="file-format">
-                  {{ languageStore.t.selectedFile }}: {{ formatDisplayName(detectedFormat) }}
-                </p>
-                <p v-else class="file-format">
-                  {{ languageStore.t.selectedFile }}: {{ selectedFile.type || 'Unknown' }}
-                </p>
-                <p class="file-size">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
-              </div>
-              <button @click="removeFile" class="remove-btn">×</button>
+
+          <div class="relative flex flex-col items-center gap-4">
+            <div class="flex items-center justify-center h-20 w-20 rounded-2xl bg-white/5 backdrop-blur-sm ring-1 ring-white/10 text-4xl transition-transform duration-300 group-hover:scale-110 group-hover:ring-orange-500/50">
+              🎬
             </div>
+            <div>
+              <p class="text-lg font-semibold text-white mb-2">{{ languageStore.t.dropFile }}</p>
+              <p class="text-sm text-gray-400">{{ languageStore.t.videoHint }}</p>
+            </div>
+          </div>
+          <input 
+            ref="fileInput"
+            type="file" 
+            accept="video/*"
+            @change="handleFileInput"
+            class="hidden"
+          />
+        </div>
+
+        <!-- Selected File Display -->
+        <div v-else class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl">🎬</div>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-white truncate mb-1">{{ selectedFile.name }}</p>
+              <p v-if="detectedFormat" class="text-sm text-gray-400">
+                {{ languageStore.t.selectedFile }}: {{ formatDisplayName(detectedFormat) }}
+              </p>
+              <p v-else class="text-sm text-gray-400">
+                {{ languageStore.t.selectedFile }}: {{ selectedFile.type || 'Unknown' }}
+              </p>
+              <p class="text-sm text-gray-400">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+            </div>
+            <button @click="removeFile" class="flex items-center justify-center h-8 w-8 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors">
+              ×
+            </button>
           </div>
         </div>
 
-        <!-- Conversion Settings -->
-        <div v-if="selectedFile" class="conversion-settings">
+        <!-- Settings -->
+        <div v-if="selectedFile" class="space-y-6">
           <!-- Output Format Selection -->
-          <div class="setting-group">
-            <label class="setting-label">{{ languageStore.t.selectOutputFormat }}</label>
-            <select v-model="outputFormat" class="format-select">
-              <option 
-                v-for="format in supportedFormats" 
-                :key="format" 
-                :value="format"
-              >
-                {{ formatDisplayName(format) }}
-                <span v-if="format === detectedFormat"> (Current)</span>
+          <div>
+            <label class="block text-sm font-medium text-white mb-2">{{ languageStore.t.selectOutputFormat }}</label>
+            <select v-model="outputFormat" class="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white focus:outline-none focus:border-orange-500/50 transition-colors">
+              <option v-for="format in supportedFormats" :key="format" :value="format">
+                {{ formatDisplayName(format) }}{{ format === detectedFormat ? ' (Current)' : '' }}
               </option>
             </select>
           </div>
 
           <!-- Basic Settings -->
-          <div class="settings-grid">
-            <!-- Frame Rate -->
-            <div class="setting-group">
-              <label class="setting-label">Frame Rate (fps)</label>
-              <select v-model="frameRate" class="setting-select">
-                <option v-for="rate in frameRateOptions" :key="rate" :value="rate">
-                  {{ rate }}
-                </option>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-white mb-2">Frame Rate (fps)</label>
+              <select v-model="frameRate" class="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-zinc-900 text-white focus:outline-none focus:border-orange-500/50">
+                <option v-for="rate in frameRateOptions" :key="rate" :value="rate">{{ rate }}</option>
               </select>
             </div>
-
-            <!-- Bitrate -->
-            <div class="setting-group">
-              <label class="setting-label">{{ languageStore.t.bitrate }} (kbps)</label>
-              <select v-model="bitrate" class="setting-select">
-                <option v-for="rate in bitrateOptions" :key="rate" :value="rate">
-                  {{ rate }}
-                </option>
+            <div>
+              <label class="block text-sm font-medium text-white mb-2">{{ languageStore.t.bitrate }} (kbps)</label>
+              <select v-model="bitrate" class="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-zinc-900 text-white focus:outline-none focus:border-orange-500/50">
+                <option v-for="rate in bitrateOptions" :key="rate" :value="rate">{{ rate }}</option>
               </select>
             </div>
           </div>
 
           <!-- Advanced Settings Toggle -->
-          <div class="advanced-toggle">
-            <button 
-              @click="showAdvanced = !showAdvanced" 
-              class="advanced-btn"
-              :class="{ active: showAdvanced }"
-            >
-              {{ languageStore.t.advanced }}
-              <span class="toggle-icon">{{ showAdvanced ? '▼' : '▶' }}</span>
-            </button>
-          </div>
+          <button
+            @click="showAdvanced = !showAdvanced"
+            class="w-full flex items-center justify-between px-6 py-4 rounded-xl border border-white/10 bg-white/5 text-white font-medium hover:bg-white/10 transition-colors"
+          >
+            <span>{{ languageStore.t.advanced }}</span>
+            <svg class="h-5 w-5 transition-transform" :class="{ 'rotate-180': showAdvanced }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
 
           <!-- Advanced Settings Panel -->
-          <div v-if="showAdvanced" class="advanced-settings">
-            <div class="settings-grid">
-              <!-- Video Codec -->
-              <div class="setting-group">
-                <label class="setting-label">Video Codec</label>
-                <select v-model="videoCodec" class="setting-select">
-                  <option 
-                    v-for="codec in supportedCodecs" 
-                    :key="codec" 
-                    :value="codec"
-                  >
-                    {{ codecDisplayName(codec) }}
-                  </option>
+          <div v-if="showAdvanced" class="rounded-xl border border-white/10 bg-white/5 p-6 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-white mb-2">Video Codec</label>
+                <select v-model="videoCodec" class="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-zinc-900 text-white focus:outline-none focus:border-orange-500/50">
+                  <option v-for="codec in supportedCodecs" :key="codec" :value="codec">{{ codecDisplayName(codec) }}</option>
                 </select>
               </div>
-
-              <!-- Width -->
-              <div class="setting-group">
-                <label class="setting-label">Width (px)</label>
-                <input 
-                  v-model.number="width" 
-                  type="number" 
-                  class="setting-input"
-                  placeholder="Auto"
-                  min="1"
-                />
+              <div>
+                <label class="block text-sm font-medium text-white mb-2">Width (px)</label>
+                <input v-model.number="width" type="number" min="1" placeholder="Auto" class="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-zinc-900 text-white focus:outline-none focus:border-orange-500/50">
               </div>
-
-              <!-- Height -->
-              <div class="setting-group">
-                <label class="setting-label">Height (px)</label>
-                <input 
-                  v-model.number="height" 
-                  type="number" 
-                  class="setting-input"
-                  placeholder="Auto"
-                  min="1"
-                />
+              <div>
+                <label class="block text-sm font-medium text-white mb-2">Height (px)</label>
+                <input v-model.number="height" type="number" min="1" placeholder="Auto" class="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-zinc-900 text-white focus:outline-none focus:border-orange-500/50">
               </div>
-
-              <!-- Fit -->
-              <div class="setting-group">
-                <label class="setting-label">Fit</label>
-                <select v-model="fit" class="setting-select">
-                  <option 
-                    v-for="option in fitOptions" 
-                    :key="option.value" 
-                    :value="option.value"
-                  >
-                    {{ option.label }}
-                  </option>
+              <div>
+                <label class="block text-sm font-medium text-white mb-2">Fit</label>
+                <select v-model="fit" class="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-zinc-900 text-white focus:outline-none focus:border-orange-500/50">
+                  <option v-for="option in fitOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
               </div>
-
-              <!-- Rotation -->
-              <div class="setting-group">
-                <label class="setting-label">Rotation</label>
-                <select v-model="rotate" class="setting-select">
-                  <option 
-                    v-for="option in rotateOptions" 
-                    :key="option.value" 
-                    :value="option.value"
-                  >
-                    {{ option.label }}
-                  </option>
+              <div>
+                <label class="block text-sm font-medium text-white mb-2">Rotation</label>
+                <select v-model="rotate" class="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-zinc-900 text-white focus:outline-none focus:border-orange-500/50">
+                  <option v-for="option in rotateOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
               </div>
-
-              <!-- Crop Toggle -->
-              <div class="setting-group">
-                <label class="setting-label">Enable Crop</label>
-                <button 
+              <div>
+                <label class="block text-sm font-medium text-white mb-2">Enable Crop</label>
+                <button
                   @click="crop = crop ? null : { left: 0, top: 0, width: 100, height: 100 }"
-                  class="toggle-btn"
-                  :class="{ active: crop !== null }"
+                  class="w-full rounded-xl border px-4 py-2.5 text-sm font-medium transition-all"
+                  :class="crop !== null
+                    ? 'border-transparent bg-orange-500 text-white shadow-[0_10px_40px_-15px_rgba(249,115,22,0.8)]'
+                    : 'border-white/10 bg-zinc-900 text-slate-200 hover:border-white/20 hover:bg-zinc-800'"
                 >
                   {{ crop ? 'Enabled' : 'Disabled' }}
                 </button>
               </div>
             </div>
 
-            <!-- Crop Settings -->
-            <div v-if="crop" class="crop-settings">
-              <h4>Crop Settings</h4>
-              <div class="crop-grid">
-                <div class="setting-group">
-                  <label class="setting-label">Left (px)</label>
-                  <input 
-                    v-model.number="crop.left" 
-                    type="number" 
-                    class="setting-input"
-                    min="0"
-                  />
+            <div v-if="crop" class="rounded-xl border border-white/10 bg-zinc-900/80 p-4 space-y-4">
+              <h4 class="text-sm font-medium text-white">Crop Settings</h4>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div>
+                  <label class="block text-xs uppercase tracking-wide text-gray-400 mb-1">Left (px)</label>
+                  <input v-model.number="crop.left" type="number" min="0" class="w-full px-3 py-2 rounded-lg border border-white/10 bg-black/40 text-white focus:outline-none focus:border-orange-500/50">
                 </div>
-                <div class="setting-group">
-                  <label class="setting-label">Top (px)</label>
-                  <input 
-                    v-model.number="crop.top" 
-                    type="number" 
-                    class="setting-input"
-                    min="0"
-                  />
+                <div>
+                  <label class="block text-xs uppercase tracking-wide text-gray-400 mb-1">Top (px)</label>
+                  <input v-model.number="crop.top" type="number" min="0" class="w-full px-3 py-2 rounded-lg border border-white/10 bg-black/40 text-white focus:outline-none focus:border-orange-500/50">
                 </div>
-                <div class="setting-group">
-                  <label class="setting-label">Width (px)</label>
-                  <input 
-                    v-model.number="crop.width" 
-                    type="number" 
-                    class="setting-input"
-                    min="1"
-                  />
+                <div>
+                  <label class="block text-xs uppercase tracking-wide text-gray-400 mb-1">Width (px)</label>
+                  <input v-model.number="crop.width" type="number" min="1" class="w-full px-3 py-2 rounded-lg border border-white/10 bg-black/40 text-white focus:outline-none focus:border-orange-500/50">
                 </div>
-                <div class="setting-group">
-                  <label class="setting-label">Height (px)</label>
-                  <input 
-                    v-model.number="crop.height" 
-                    type="number" 
-                    class="setting-input"
-                    min="1"
-                  />
+                <div>
+                  <label class="block text-xs uppercase tracking-wide text-gray-400 mb-1">Height (px)</label>
+                  <input v-model.number="crop.height" type="number" min="1" class="w-full px-3 py-2 rounded-lg border border-white/10 bg-black/40 text-white focus:outline-none focus:border-orange-500/50">
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Convert Button -->
-          <div class="convert-section">
-            <button 
-              @click="convertVideo" 
-              class="convert-btn"
-              :disabled="!canConvert"
-            >
-              {{ isConverting ? 'Converting...' : 'Convert Video' }}
-            </button>
+          <button
+            @click="convertVideo"
+            :disabled="!canConvert"
+            class="w-full px-6 py-4 rounded-xl bg-orange-500 text-white font-semibold hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ isConverting ? languageStore.t.compressing || 'Processing…' : languageStore.t.convertVideo || 'Convert Video' }}
+          </button>
+
+          <!-- Progress -->
+          <div v-if="isConverting" class="space-y-3">
+            <div class="h-3 rounded-full bg-white/10 overflow-hidden">
+              <div class="h-full bg-linear-to-r from-orange-500 to-orange-600 transition-all duration-300" :style="{ width: `${conversionProgress}%` }"></div>
+            </div>
+            <p class="text-center text-sm font-medium text-white">{{ conversionProgress }}% Complete</p>
           </div>
 
-          <!-- Progress Bar -->
-          <div v-if="isConverting" class="progress-section">
-            <div class="progress-bar">
-              <div 
-                class="progress-fill" 
-                :style="{ width: `${conversionProgress}%` }"
-              ></div>
+          <!-- Error -->
+          <div v-if="conversionError" class="rounded-xl border border-red-500/30 bg-red-500/10 p-6 space-y-4">
+            <div class="flex items-start gap-3">
+              <span class="text-2xl">⚠️</span>
+              <div>
+                <p class="font-semibold text-red-300 mb-1">{{ languageStore.t.error || 'Conversion Failed' }}</p>
+                <p class="text-sm text-red-200">{{ conversionError }}</p>
+              </div>
             </div>
-            <div class="progress-text">
-              {{ conversionProgress }}% Complete
-            </div>
-          </div>
-
-          <!-- Error Message -->
-          <div v-if="conversionError" class="error-section">
-            <div class="error-message">
-              <span class="error-icon">⚠️</span>
-              {{ conversionError }}
-            </div>
-            <button @click="resetConversion" class="retry-btn">
+            <button @click="resetConversion" class="w-full px-4 py-3 rounded-lg border border-red-500/50 bg-red-500/20 text-red-200 font-medium transition-colors hover:bg-red-500/30">
               {{ languageStore.t.retry }}
             </button>
           </div>
 
-          <!-- Conversion Results -->
-          <div v-if="conversionComplete && convertedFile" class="results-section">
-            <div class="result-panel">
-              <div class="result-header">
-                <h3>✅ {{ languageStore.t.compressionComplete }}</h3>
-              </div>
-              <div class="result-content">
-                <div class="file-info">
-                  <div class="file-name">
-                    {{ selectedFile?.name.split('.')[0] }}.{{ outputFormat }}
-                  </div>
-                  <div class="file-size">
-                    {{ (convertedFile.size / 1024 / 1024).toFixed(2) }} MB
-                  </div>
-                </div>
-                <div class="result-actions">
-                  <button @click="downloadConvertedFile" class="download-btn">
-                    {{ languageStore.t.download }}
-                  </button>
-                  <button @click="resetConversion" class="retry-btn">
-                    {{ languageStore.t.compressAgain }}
-                  </button>
-                </div>
-              </div>
+          <!-- Success -->
+          <div v-if="conversionComplete && convertedFile" class="rounded-xl border border-green-500/30 bg-green-500/10 p-6 space-y-4">
+            <div class="text-center">
+              <p class="inline-flex items-center gap-2 text-lg font-semibold text-green-300 mb-2">
+                <span class="text-2xl">✓</span>
+                {{ languageStore.t.compressionComplete || 'Conversion Complete' }}
+              </p>
+            </div>
+
+            <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+              <p class="font-semibold text-white truncate">{{ selectedFile?.name.split('.')[0] }}.{{ outputFormat }}</p>
+              <p class="text-sm text-gray-400">{{ (convertedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button @click="downloadConvertedFile" class="px-6 py-3 rounded-xl bg-orange-500 text-white font-semibold transition-colors hover:bg-orange-600">
+                📥 {{ languageStore.t.download }}
+              </button>
+              <button @click="resetConversion" class="px-6 py-3 rounded-xl border border-white/10 bg-white/5 text-white font-semibold transition-colors hover:bg-white/10">
+                🔄 {{ languageStore.t.compressAgain }}
+              </button>
             </div>
           </div>
         </div>
         
         <!-- Info Section -->
-        <div class="converter-info">
-          <p>{{ languageStore.t.videoDescription }}</p>
+        <div class="rounded-lg border border-white/10 bg-white/5 p-4">
+          <p class="text-sm text-gray-400">{{ languageStore.t.videoDescription }}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.hidden {
-  display: none;
-}
-
-.settings-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.crop-settings {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.crop-settings h4 {
-  color: var(--color-white);
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.crop-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 0.75rem;
-}
-
-.setting-input {
-  width: 100%;
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  color: var(--color-white);
-  font-size: 0.9rem;
-}
-
-.setting-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.toggle-btn {
-  width: 100%;
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  color: var(--color-white);
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.toggle-btn.active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-@media (max-width: 768px) {
-  .settings-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .crop-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-</style>
