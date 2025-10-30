@@ -46,6 +46,8 @@ export const useLanguageStore = defineStore('language', () => {
       videoConverter: 'Video Converter',
       videoHint: 'Supports MP4, WebM, MKV with hardware acceleration',
       videoDescription: 'Convert videos between different formats',
+      convertVideo: 'Convert Video',
+      selectedVideoFile: 'Selected Video File',
       
       // Video compressor
       videoCompressor: 'Video Compressor',
@@ -120,6 +122,8 @@ export const useLanguageStore = defineStore('language', () => {
       videoConverter: 'Convertidor de Video',
       videoHint: 'Soporta MP4, WebM, MKV con aceleración por hardware',
       videoDescription: 'Convierte videos entre diferentes formatos',
+      convertVideo: 'Convertir Video',
+      selectedVideoFile: 'Archivo de Video Seleccionado',
       
       // Video compressor
       videoCompressor: 'Compresor de Video',
