@@ -82,6 +82,7 @@ export const useLanguageStore = defineStore('language', () => {
       error: 'Error',
       retry: 'Retry',
       compressorInfo: 'Tweak bitrate and quickly download your optimized video.',
+      changeFile: 'Change',
       
       // Footer
       quickAccess: 'Quick Access',
@@ -164,6 +165,7 @@ export const useLanguageStore = defineStore('language', () => {
       error: 'Error',
       retry: 'Reintentar',
       compressorInfo: 'Ajusta el bitrate y descarga tu video optimizado al instante.',
+      changeFile: 'Cambiar',
       
       // Footer
       quickAccess: 'Acceso Rápido',
