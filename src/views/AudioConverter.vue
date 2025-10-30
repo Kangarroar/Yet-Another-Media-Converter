@@ -316,10 +316,10 @@ checkSupportedCodecs()
   <!-- Overlay -->
   <div class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md p-4 sm:p-6" @click="handleOverlayClick">
     <!-- Modal Container -->
-    <div class="w-full max-w-4xl max-h-[92vh] flex flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900/95 to-black/95 backdrop-blur-3xl shadow-2xl shadow-black/50 ring-1 ring-white/5" @click.stop>
+    <div class="w-full max-w-4xl max-h-[92vh] flex flex-col rounded-3xl border border-white/10 bg-linear-to-brom-zinc-900/95 to-black/95 backdrop-blur-3xl shadow-2xl shadow-black/50 ring-1 ring-white/5" @click.stop>
       
       <!-- Header -->
-      <div class="flex items-center justify-between border-b border-white/5 bg-white/[0.02] px-8 py-5 backdrop-blur-sm">
+      <div class="flex items-center justify-between border-b border-white/5 bg-white/2 px-8 py-5 backdrop-blur-sm">
         <button @click="goBack" class="group flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-gray-400 transition-all hover:bg-white/10 hover:text-white">
           <svg class="h-4 w-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -336,8 +336,8 @@ checkSupportedCodecs()
         <!-- Upload Zone -->
         <div 
           v-if="!selectedFile"
-          class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] p-16 text-center cursor-pointer transition-all duration-300 hover:border-orange-500/50 hover:from-orange-500/10 hover:to-orange-500/5 hover:shadow-lg hover:shadow-orange-500/10"
-          :class="{ '!border-orange-500 !from-orange-500/20 !to-orange-500/10 scale-[1.02]': isDragOver }"
+          class="group relative overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-white/5 to-white/2 p-16 text-center cursor-pointer transition-all duration-300 hover:border-orange-500/50 hover:from-orange-500/10 hover:to-orange-500/5 hover:shadow-lg hover:shadow-orange-500/10"
+          :class="{ 'border-orange-500! from-orange-500/20! to-orange-500/10! scale-[1.02]': isDragOver }"
           @drop="handleDrop"
           @dragover="handleDragOver"
           @dragleave="handleDragLeave"
@@ -463,7 +463,7 @@ checkSupportedCodecs()
           <!-- Progress -->
           <div v-if="isConverting" class="space-y-3">
             <div class="h-3 rounded-full bg-white/10 overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300" :style="{ width: `${conversionProgress}%` }"></div>
+              <div class="h-full bg-linear-to-r from-orange-500 to-orange-600 transition-all duration-300" :style="{ width: `${conversionProgress}%` }"></div>
             </div>
             <p class="text-center text-sm font-medium text-white">{{ conversionProgress }}% Complete</p>
           </div>
