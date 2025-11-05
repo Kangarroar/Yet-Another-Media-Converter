@@ -17,7 +17,7 @@ export const useLanguageStore = defineStore('language', () => {
       compress: 'Compress',
       
       // Common
-      back: '← Back',
+      back: 'Back',
       dropFile: 'Drop your file here or click to browse',
       comingSoon: 'Coming soon...',
       
@@ -101,7 +101,7 @@ export const useLanguageStore = defineStore('language', () => {
       compress: 'Comprimir',
       
       // Common
-      back: '← Atrás',
+      back: 'Atrás',
       dropFile: 'Arrastra tu archivo aquí o haz clic para explorar',
       comingSoon: 'Próximamente...',
       
