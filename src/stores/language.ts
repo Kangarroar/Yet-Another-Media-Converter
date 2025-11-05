@@ -17,7 +17,7 @@ export const useLanguageStore = defineStore('language', () => {
       compress: 'Compress',
       
       // Common
-      back: '← Back',
+      back: 'Back',
       dropFile: 'Drop your file here or click to browse',
       comingSoon: 'Coming soon...',
       
@@ -25,16 +25,34 @@ export const useLanguageStore = defineStore('language', () => {
       imageConverter: 'Image Converter',
       imageHint: 'Supports JPG, PNG, WebP, AVIF',
       imageDescription: 'Convert images between different formats',
+      convertImage: 'Convert Image',
+      clear: 'Remove',
+      compression: 'Compression',
+      qualityHint: 'Higher quality means larger file size.',
+      filesOnly: 'files only',
       
       // Audio converter
       audioConverter: 'Audio Converter',
       audioHint: 'Supports WAV, MP3, AAC, M4A, FLAC, Opus',
       audioDescription: 'Convert audio files between different formats',
+      selectOutputFormat: 'Select Output Format',
+      convertTo: 'Convert to',
+      advanced: 'Advanced',
+      bitrate: 'Bitrate',
+      channels: 'Channels',
+      sampleRate: 'Sample Rate',
+      mono: 'Mono (1)',
+      stereo: 'Stereo (2)',
+      convertAudio: 'Convert Audio',
+      selectAudioFile: 'Select Audio File',
+      selectedAudioFile: 'Selected Audio File',
       
       // Video converter
       videoConverter: 'Video Converter',
       videoHint: 'Supports MP4, WebM, MKV with hardware acceleration',
       videoDescription: 'Convert videos between different formats',
+      convertVideo: 'Convert Video',
+      selectedVideoFile: 'Selected Video File',
       
       // Video compressor
       videoCompressor: 'Video Compressor',
@@ -63,6 +81,8 @@ export const useLanguageStore = defineStore('language', () => {
       processing: 'Processing...',
       error: 'Error',
       retry: 'Retry',
+      compressorInfo: 'Tweak bitrate and quickly download your optimized video.',
+      changeFile: 'Change',
       
       // Footer
       quickAccess: 'Quick Access',
@@ -81,7 +101,7 @@ export const useLanguageStore = defineStore('language', () => {
       compress: 'Comprimir',
       
       // Common
-      back: '← Atrás',
+      back: 'Atrás',
       dropFile: 'Arrastra tu archivo aquí o haz clic para explorar',
       comingSoon: 'Próximamente...',
       
@@ -89,16 +109,33 @@ export const useLanguageStore = defineStore('language', () => {
       imageConverter: 'Convertidor de Imágenes',
       imageHint: 'Soporta JPG, PNG, WebP, AVIF',
       imageDescription: 'Convierte imágenes entre diferentes formatos',
+      convertImage: 'Convertir Imagen',
+      clear: 'Quitar',
+      compression: 'Compresión',
+      qualityHint: 'Mayor calidad significa un archivo más grande.',
+      filesOnly: 'solo archivos',
       
       // Audio converter
       audioConverter: 'Convertidor de Audio',
       audioHint: 'Soporta WAV, MP3, AAC, M4A, FLAC, Opus',
       audioDescription: 'Convierte archivos de audio entre diferentes formatos',
+      selectOutputFormat: 'Seleccionar Formato de Salida',
+      advanced: 'Avanzado',
+      bitrate: 'Bitrate',
+      channels: 'Canales',
+      sampleRate: 'Frecuencia de Muestreo',
+      mono: 'Mono (1)',
+      stereo: 'Estéreo (2)',
+      convertAudio: 'Convertir Audio',
+      selectAudioFile: 'Seleccionar Archivo de Audio',
+      selectedAudioFile: 'Archivo de Audio Seleccionado',
       
       // Video converter
       videoConverter: 'Convertidor de Video',
       videoHint: 'Soporta MP4, WebM, MKV con aceleración por hardware',
       videoDescription: 'Convierte videos entre diferentes formatos',
+      convertVideo: 'Convertir Video',
+      selectedVideoFile: 'Archivo de Video Seleccionado',
       
       // Video compressor
       videoCompressor: 'Compresor de Video',
@@ -127,6 +164,8 @@ export const useLanguageStore = defineStore('language', () => {
       processing: 'Procesando...',
       error: 'Error',
       retry: 'Reintentar',
+      compressorInfo: 'Ajusta el bitrate y descarga tu video optimizado al instante.',
+      changeFile: 'Cambiar',
       
       // Footer
       quickAccess: 'Acceso Rápido',
